@@ -11,7 +11,17 @@ um.load(function(err) {
     return;
   }
   um.authenticateUser(USERNAME, PASSWORD, function(err, result) {
-    console.log(err);
-    console.log(result);
+    if (err) {
+      console.log('Error: ' + err);
+      return;
+    }
+    if (!result.userExists) {
+      console.log('Invalid username');
+    } else if (!result.passwordsMatch) {
+      console.log('Invalid password');
+    } else {
+      console.log('User authenticated and their token is: ' + result.token);
+    }
+    process.exit();
   });
 });
