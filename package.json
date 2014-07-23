@@ -4,12 +4,14 @@
   "description": "A user management and authentication service for Node.js",
   "main": "lib/user.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./test/bootstrap.js"
   },
   "repository": {
     "type": "git",
     "url": "git@gitlab.theoreticalideations.com:nebrius/user-management.git"
   },
+  "homepage": "https://gitlab.theoreticalideations.com/nebrius/user-management/tree/master",
+  "issues": "https://gitlab.theoreticalideations.com/nebrius/user-management/issues",
   "keywords": [
     "user",
     "management",
@@ -18,7 +20,6 @@
   "author": "Bryan Hughes <bryan@theoreticalideations.com>",
   "license": "MIT",
   "dependencies": {
-    "mongodb": "1.4.x",
-    "async": "0.9.x"
+    "mongodb": "1.4.x"
   }
 }

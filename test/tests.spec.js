@@ -39,6 +39,8 @@ describe('User Creation', function() {
     perm2: false
   };
 
+  var token;
+
   it('Can connect to the test database ', function(done) {
     um.load(function(err) {
       expect(err).toBeNull();
@@ -102,12 +104,61 @@ describe('User Creation', function() {
       expect(result.userExists).toBe(true);
       expect(result.passwordsMatch).toBe(true);
       expect(typeof result.token).toBe('string');
+      token = result.token;
       done();
     });
   });
 
-  // The process doesn't exit on its own because of MongoDB
-  setTimeout(function() {
-    process.exit();
-  }, 2000);
+  it('Expects the token to be valid', function(done) {
+    um.isTokenValid(token, function(err, valid) {
+      expect(err).toBeNull();
+      expect(valid).toBe(true);
+      done();
+    });
+  });
+
+  it('Expects a bad token to be invalid', function(done) {
+    um.isTokenValid('bad', function(err, valid) {
+      expect(err).toBeNull();
+      expect(valid).toBe(false);
+      done();
+    });
+  });
+
+  it('Can get the username from a token', function(done) {
+    um.getUsernameForToken(token, function(err, username) {
+      expect(err).toBeNull();
+      expect(username).toBe(USERNAME);
+      done();
+    });
+  });
+
+  it('Cannot get the username from a bad token', function(done) {
+    um.getUsernameForToken('bad', function(err, username) {
+      expect(err).toBeNull();
+      expect(username).toBeNull();
+      done();
+    });
+  });
+
+  it('Can get the token from a username', function(done) {
+    um.getTokenForUsername(USERNAME, function(err, foundToken) {
+      expect(err).toBeNull();
+      expect(foundToken).toBe(token);
+      done();
+    });
+  });
+
+  it('Cannot get the token from a bad username', function(done) {
+    um.getTokenForUsername('bad', function(err, foundToken) {
+      expect(err).toBeNull();
+      expect(foundToken).toBeNull();
+      done();
+
+      // The process won't exit on its own, so we wait a bit for Jasmine to finish and force an exit
+      setTimeout(function() {
+        process.exit();
+      }, 500);
+    });
+  });
 });
