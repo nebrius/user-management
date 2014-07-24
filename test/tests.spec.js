@@ -161,4 +161,66 @@ describe('User Creation', function() {
       }, 500);
     });
   });
+
+  it('Can set extras for username', function(done) {
+    um.setExtrasForUsername(USERNAME, { name: 'foo bar'}, function(err) {
+      expect(err).toBeNull();
+      done();
+    });
+  });
+
+  it('Cannot set extras for bad username', function(done) {
+    um.setExtrasForUsername('bad', { name: 'foo bar'}, function(err) {
+      expect(err).toBeNull();
+      done();
+    });
+  });
+
+  it('Can get extras for username', function(done) {
+    um.getExtrasForUsername(USERNAME, function(err, extras) {
+      expect(err).toBeNull();
+      expect(typeof extras).toBe('object');
+      expect(extras.name).toBe('foo bar');
+      done();
+    });
+  });
+
+  it('Cannot get extras for bad username', function(done) {
+    um.getExtrasForUsername('bad', function(err, extras) {
+      expect(err).toBeNull();
+      expect(extras).toBeNull();
+      done();
+    });
+  });
+
+  it('Can set extras for token', function(done) {
+    um.setExtrasForToken(token, { name: 'bar foo' }, function(err) {
+      expect(err).toBeNull();
+      done();
+    });
+  });
+
+  it('Cannot set extras for bad token', function(done) {
+    um.setExtrasForToken('bad', { name: 'bar foo' }, function(err) {
+      expect(err).toBeNull();
+      done();
+    });
+  });
+
+  it('Can get extras for token', function(done) {
+    um.getExtrasForToken(token, function(err, extras) {
+      expect(err).toBeNull();
+      expect(typeof extras).toBe('object');
+      expect(extras.name).toBe('bar foo');
+      done();
+    });
+  });
+
+  it('Cannot get extras for bad token', function(done) {
+    um.getExtrasForToken('bad', function(err, extras) {
+      expect(err).toBeNull();
+      expect(typeof extras).toBeNull();
+      done();
+    });
+  });
 });

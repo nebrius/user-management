@@ -22,13 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+// NOTE: This test assumes you have already run the create_user and authenticate_user examples
+
 var UM = require('../');
 
 var USERNAME = 'foo';
-var PASSWORD = 'bar';
-var EXTRAS = {
-  name: 'Finnius F. Bar'
-};
 
 var um = new UM();
 um.load(function(err) {
@@ -36,25 +34,32 @@ um.load(function(err) {
     console.log('Error: ' + err);
     process.exit(1);
   }
-  console.log('Checking if the user exists');
-  um.userExists(USERNAME, function(err, result) {
+  um.getExtrasForUsername(USERNAME, function(err, extras) {
     if (err) {
-      console.error('  Error: ' + err);
+      console.log('Error: ' + err);
       process.exit(1);
-    } else if (result) {
-      console.log('  User already exists');
-      process.exit();
-    } else {
-      console.log('  User does not exist');
-      console.log('Creating the user');
-      um.createUser(USERNAME, PASSWORD, EXTRAS, function (err) {
+    }
+    console.log('Name: ' + extras.name);
+  });
+  um.getTokenForUsername(USERNAME, function(err, token) {
+    if (err) {
+      console.log('Error: ' + err);
+      process.exit(1);
+    }
+    um.setExtrasForToken(token, { address: '123 Fake St.' }, function(err) {
+      if (err) {
+        console.log('Error: ' + err);
+        process.exit(1);
+      }
+      console.log('Updated the address');
+      um.getExtrasForToken(token, function(err, extras) {
         if (err) {
-          console.log('  Error: ' + err);
+          console.log('Error: ' + err);
           process.exit(1);
         }
-        console.log('  User created');
+        console.log('The address is: ' + extras.address);
         process.exit();
       });
-    }
+    });
   });
 });
