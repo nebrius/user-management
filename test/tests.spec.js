@@ -219,7 +219,7 @@ describe('User Creation', function() {
   it('Cannot get extras for bad token', function(done) {
     um.getExtrasForToken('bad', function(err, extras) {
       expect(err).toBeNull();
-      expect(typeof extras).toBeNull();
+      expect(extras).toBeNull();
       done();
     });
   });
