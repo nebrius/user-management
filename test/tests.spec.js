@@ -34,6 +34,7 @@ describe('User Creation', function() {
 
   var USERNAME = 'foo';
   var PASSWORD = 'bar';
+  var NEW_PASSWORD = 'bar2';
   var PERMISSIONS = {
     perm1: true,
     perm2: false
@@ -154,11 +155,6 @@ describe('User Creation', function() {
       expect(err).toBeNull();
       expect(foundToken).toBeNull();
       done();
-
-      // The process won't exit on its own, so we wait a bit for Jasmine to finish and force an exit
-      setTimeout(function() {
-        process.exit();
-      }, 500);
     });
   });
 
@@ -221,6 +217,78 @@ describe('User Creation', function() {
       expect(err).toBeNull();
       expect(extras).toBeNull();
       done();
+    });
+  });
+
+  it('Can Expire Token', function(done) {
+    um.expireToken(token, function (err) {
+      expect(err).toBeNull();
+      done();
+    });
+  });
+
+  it('Expects the token to be invalid after expire', function(done) {
+    um.isTokenValid(token, function(err, valid) {
+      expect(err).toBeNull();
+      expect(valid).toBe(false);
+      done();
+    });
+  });
+
+  it('Succeeds when authenticating after expiring token', function(done) {
+    um.authenticateUser(USERNAME, PASSWORD, function(err, result) {
+      expect(err).toBeNull();
+      expect(result.userExists).toBe(true);
+      expect(result.passwordsMatch).toBe(true);
+      expect(typeof result.token).toBe('string');
+      token = result.token;
+      done();
+    });
+  });
+
+  /*it('Can change the user\'s password', function(done) {
+    um.changePassword(token, PASSWORD, NEW_PASSWORD, function(err) {
+      expect(err).toBeNull();
+      done();
+    });
+  });
+
+  it('Expects the user token to be expired after changing password', function(done) {
+    um.isTokenValid(token, function(err, valid) {
+      expect(err).toBeNull();
+      expect(valid).toBe(false);
+      done();
+    });
+  });
+
+  it('Can authenticate with the new password', function(done) {
+    um.authenticateUser(USERNAME, NEW_PASSWORD, function(err, result) {
+      expect(err).toBeNull();
+      expect(result.userExists).toBe(true);
+      expect(result.passwordsMatch).toBe(true);
+      expect(typeof result.token).toBe('string');
+      token = result.token;
+      done();
+    });
+  });*/
+
+  it('Can remove the user', function(done) {
+    um.removeUser(USERNAME, function(err) {
+      expect(err).toBeNull();
+      done();
+    });
+  });
+
+  it('Can check that the test user no longer exist\'s', function(done) {
+    um.userExists(USERNAME, function(err, exists) {
+      expect(err).toBeNull();
+      expect(exists).toBe(false);
+      done();
+
+      // The process won't exit on its own, so we wait a bit for Jasmine to finish and force an exit
+      setTimeout(function() {
+        process.exit();
+      }, 500);
     });
   });
 });
