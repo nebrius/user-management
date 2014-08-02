@@ -3,8 +3,6 @@ User Management
 
 A MongoDB-based User Management system with session tokens. Passwords are salted and hashed using PBKDF2.
 
-API docs coming soon!
-
 ## Installing
 
 To install user-management:
@@ -100,7 +98,7 @@ users.load(function(err) {
     } else if (!result.passwordsMatch) {
       console.log('Invalid password');
     } else {
-      console.log('User authenticated and their token is: ' + result.token);
+      console.log('User token is: '+ result.token);
     }
     users.close();
   });

@@ -1,6 +1,6 @@
 {
   "name": "user-management",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "User authentication and management for Node.js using MongoDB",
   "main": "lib/user.js",
   "scripts": {
