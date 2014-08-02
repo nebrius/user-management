@@ -204,7 +204,7 @@ users.load(function(err) {
           } else if (!result.passwordsMatch) {
             console.log('Invalid password');
           } else {
-            console.log('User authenticated and their token is: ' + result.token);
+            console.log('User token is: ' + result.token);
           }
           users.close();
         });
@@ -234,7 +234,7 @@ users.load(function(err) {
       } else if (!result.passwordsMatch) {
         console.log('Invalid password');
       } else {
-        console.log('User authenticated and their token is: ' + result.token);
+        console.log('User token is: ' + result.token);
       }
       users.close();
     });
