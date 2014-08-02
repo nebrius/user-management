@@ -246,7 +246,7 @@ describe('User Creation', function() {
     });
   });
 
-  /*it('Can change the user\'s password', function(done) {
+  it('Can change the user\'s password', function(done) {
     um.changePassword(token, PASSWORD, NEW_PASSWORD, function(err) {
       expect(err).toBeNull();
       done();
@@ -270,7 +270,26 @@ describe('User Creation', function() {
       token = result.token;
       done();
     });
-  });*/
+  });
+
+  it('Can reset the user\'s password', function(done) {
+    um.resetPassword(USERNAME, function(err, newPassword) {
+      expect(err).toBeNull();
+      NEW_PASSWORD = newPassword;
+      done();
+    });
+  });
+
+  it('Can authenticate with the reset password', function(done) {
+    um.authenticateUser(USERNAME, NEW_PASSWORD, function(err, result) {
+      expect(err).toBeNull();
+      expect(result.userExists).toBe(true);
+      expect(result.passwordsMatch).toBe(true);
+      expect(typeof result.token).toBe('string');
+      token = result.token;
+      done();
+    });
+  });
 
   it('Can remove the user', function(done) {
     um.removeUser(USERNAME, function(err) {

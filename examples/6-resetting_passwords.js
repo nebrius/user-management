@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-// NOTE: This test assumes you have already run the create_user and authenticate_user examples
+// NOTE: This test assumes you have already run the create_user, authenticate_user, and changing_passwords examples
 
 var UserManagement = require('../');
 
@@ -35,33 +35,24 @@ users.load(function(err) {
     users.close();
     return;
   }
-  users.getExtrasForUsername(USERNAME, function(err, extras) {
+  users.resetPassword(USERNAME, function(err, newPassword) {
     if (err) {
       console.log('Error: ' + err);
       users.close();
-    } else {
-      console.log('Name: ' + extras.name);
+      return;
     }
-  });
-  users.getTokenForUsername(USERNAME, function(err, token) {
-    if (err) {
-      console.log('Error: ' + err);
-      users.close();
-    }
-    users.setExtrasForToken(token, { address: '123 Fake St.' }, function(err) {
+    console.log('User\'s password reset to: ' + newPassword);
+    users.authenticateUser(USERNAME, newPassword, function(err, result) {
       if (err) {
         console.log('Error: ' + err);
-        users.close();
+      } else if (!result.userExists) {
+        console.log('Invalid username');
+      } else if (!result.passwordsMatch) {
+        console.log('Invalid password');
+      } else {
+        console.log('User authenticated and their token is: ' + result.token);
       }
-      console.log('Updated the address');
-      users.getExtrasForToken(token, function(err, extras) {
-        if (err) {
-          console.log('Error: ' + err);
-        } else {
-          console.log('The address is: ' + extras.address);
-        }
-        users.close();
-      });
+      users.close();
     });
   });
 });

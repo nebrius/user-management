@@ -35,33 +35,23 @@ users.load(function(err) {
     users.close();
     return;
   }
-  users.getExtrasForUsername(USERNAME, function(err, extras) {
+  users.removeUser(USERNAME, function(err) {
     if (err) {
       console.log('Error: ' + err);
       users.close();
-    } else {
-      console.log('Name: ' + extras.name);
+      return;
     }
-  });
-  users.getTokenForUsername(USERNAME, function(err, token) {
-    if (err) {
-      console.log('Error: ' + err);
-      users.close();
-    }
-    users.setExtrasForToken(token, { address: '123 Fake St.' }, function(err) {
+    console.log('User has been removed');
+    users.userExists(USERNAME, function(err, exists) {
       if (err) {
         console.log('Error: ' + err);
         users.close();
+      } else if (!exists) {
+        console.log('The user does not exist, as expected');
+      } else {
+        console.log('The user still exists');
       }
-      console.log('Updated the address');
-      users.getExtrasForToken(token, function(err, extras) {
-        if (err) {
-          console.log('Error: ' + err);
-        } else {
-          console.log('The address is: ' + extras.address);
-        }
-        users.close();
-      });
+      users.close();
     });
   });
 });

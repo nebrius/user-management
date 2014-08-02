@@ -27,6 +27,8 @@ THE SOFTWARE.
 var UserManagement = require('../');
 
 var USERNAME = 'foo';
+var OLD_PASSWORD = 'bar';
+var NEW_PASSWORD = 'baz';
 
 var users = new UserManagement();
 users.load(function(err) {
@@ -35,32 +37,38 @@ users.load(function(err) {
     users.close();
     return;
   }
-  users.getExtrasForUsername(USERNAME, function(err, extras) {
-    if (err) {
-      console.log('Error: ' + err);
-      users.close();
-    } else {
-      console.log('Name: ' + extras.name);
-    }
-  });
   users.getTokenForUsername(USERNAME, function(err, token) {
     if (err) {
       console.log('Error: ' + err);
       users.close();
+      return;
     }
-    users.setExtrasForToken(token, { address: '123 Fake St.' }, function(err) {
+    users.changePassword(token, OLD_PASSWORD, NEW_PASSWORD, function(err) {
       if (err) {
         console.log('Error: ' + err);
         users.close();
+        return;
       }
-      console.log('Updated the address');
-      users.getExtrasForToken(token, function(err, extras) {
+      users.isTokenValid(token, function(err, valid) {
         if (err) {
           console.log('Error: ' + err);
+        } else if (!valid) {
+          console.log('The token is not valid, as expected');
         } else {
-          console.log('The address is: ' + extras.address);
+          console.log('The token is valid, but should not be');
         }
-        users.close();
+        users.authenticateUser(USERNAME, NEW_PASSWORD, function(err, result) {
+          if (err) {
+            console.log('Error: ' + err);
+          } else if (!result.userExists) {
+            console.log('Invalid username');
+          } else if (!result.passwordsMatch) {
+            console.log('Invalid password');
+          } else {
+            console.log('User authenticated and their token is: ' + result.token);
+          }
+          users.close();
+        });
       });
     });
   });

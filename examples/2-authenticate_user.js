@@ -24,29 +24,28 @@ THE SOFTWARE.
 
 // NOTE: This test assumes you have already run the create_user example
 
-var UM = require('../');
+var UserManagement = require('../');
 
 var USERNAME = 'foo';
 var PASSWORD = 'bar';
 
-var um = new UM();
-um.load(function(err) {
+var users = new UserManagement();
+users.load(function(err) {
   if (err) {
     console.log('Error: ' + err);
-    process.exit(1);
+    users.close();
+    return;
   }
-  um.authenticateUser(USERNAME, PASSWORD, function(err, result) {
+  users.authenticateUser(USERNAME, PASSWORD, function(err, result) {
     if (err) {
       console.log('Error: ' + err);
-      process.exit(1);
-    }
-    if (!result.userExists) {
+    } else if (!result.userExists) {
       console.log('Invalid username');
     } else if (!result.passwordsMatch) {
       console.log('Invalid password');
     } else {
       console.log('User authenticated and their token is: ' + result.token);
     }
-    process.exit();
+    users.close();
   });
 });

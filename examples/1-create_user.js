@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-var UM = require('../');
+var UserManagement = require('../');
 
 var USERNAME = 'foo';
 var PASSWORD = 'bar';
@@ -30,30 +30,31 @@ var EXTRAS = {
   name: 'Finnius F. Bar'
 };
 
-var um = new UM();
-um.load(function(err) {
+var users = new UserManagement();
+users.load(function(err) {
   if (err) {
     console.log('Error: ' + err);
-    process.exit(1);
+    users.close();
+    return;
   }
   console.log('Checking if the user exists');
-  um.userExists(USERNAME, function(err, result) {
+  users.userExists(USERNAME, function(err, exists) {
     if (err) {
       console.error('  Error: ' + err);
-      process.exit(1);
-    } else if (result) {
+      users.close();
+    } else if (exists) {
       console.log('  User already exists');
-      process.exit();
+      users.close();
     } else {
       console.log('  User does not exist');
       console.log('Creating the user');
-      um.createUser(USERNAME, PASSWORD, EXTRAS, function (err) {
+      users.createUser(USERNAME, PASSWORD, EXTRAS, function (err) {
         if (err) {
           console.log('  Error: ' + err);
-          process.exit(1);
+        } else {
+          console.log('  User created');
         }
-        console.log('  User created');
-        process.exit();
+        users.close();
       });
     }
   });

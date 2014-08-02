@@ -1,6 +1,0 @@
-User Management
-===============
-
-A MongoDB-based User Management system with session tokens. Passwords are salted and hashed using PBKDF2.
-
-API docs coming soon!

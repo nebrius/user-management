@@ -24,29 +24,41 @@ THE SOFTWARE.
 
 // NOTE: This test assumes you have already run the create_user and authenticate_user examples
 
-var UM = require('../');
+var UserManagement = require('../');
 
 var USERNAME = 'foo';
 
-var um = new UM();
-um.load(function(err) {
+var users = new UserManagement();
+users.load(function(err) {
   if (err) {
     console.log('Error: ' + err);
-    process.exit(1);
+    users.close();
+    return;
   }
-  um.getTokenForUsername(USERNAME, function(err, token) {
+  users.getTokenForUsername(USERNAME, function(err, token) {
     if (err) {
       console.log('Error: ' + err);
-      process.exit(1);
+      users.close();
+      return;
     }
     console.log('The user\'s token is: ' + token);
-    um.getUsernameForToken(token, function(err, username) {
+    users.getUsernameForToken(token, function(err, username) {
       if (err) {
         console.log('Error: ' + err);
-        process.exit(1);
+        users.close();
+      } else {
+        console.log('The username for the token is: ' + username);
       }
-      console.log('The username for the token is: ' + username);
-      process.exit();
+    });
+    users.isTokenValid(token, function(err, valid) {
+      if (err) {
+        console.log('Error: ' + err);
+      } else if (!valid) {
+        console.log('The token is not valid');
+      } else {
+        console.log('The token is valid');
+      }
+      users.close();
     });
   });
 });
