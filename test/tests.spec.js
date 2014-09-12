@@ -79,6 +79,15 @@ describe('User Creation', function() {
     });
   });
 
+  it('Can query all uesrs', function(done) {
+    um.getUserList(function(err, list) {
+      expect(err).toBeNull();
+      expect(list.length).toBe(1);
+      expect(list[0]).toBe(USERNAME);
+      done();
+    });
+  });
+
   it('Fails when authenticating with a bad username', function(done) {
     um.authenticateUser('bad', 'bad', function(err, result) {
       expect(err).toBeNull();
