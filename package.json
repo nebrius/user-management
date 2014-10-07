@@ -1,6 +1,6 @@
 {
   "name": "user-management",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "User authentication and management for Node.js using MongoDB",
   "main": "lib/user.js",
   "scripts": {
@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.theoreticalideations.com:nebrius/user-management.git"
+    "url": "git@github.com:bryan-m-hughes/user-management.git"
   },
-  "homepage": "https://gitlab.theoreticalideations.com/nebrius/user-management/tree/master",
-  "issues": "https://gitlab.theoreticalideations.com/nebrius/user-management/issues",
+  "homepage": "https://github.com/bryan-m-hughes/user-management",
+  "issues": "https://github.com/bryan-m-hughes/user-management/issues",
   "keywords": [
     "user",
     "management",
