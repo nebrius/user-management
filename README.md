@@ -262,6 +262,10 @@ Connects to the database and loads the user management information. Callback tak
 Closes the connection to the database. Callback takes a single argument, err. If you do not call this method, the node
 process will not terminate on it's own without calling ```process.exit()```.
 
+### _instance_.getUserList(cb(err: string|null, userList:array|undefined))
+
+Gets the list of usernames. If an error occurs, userList is undefined, otherwise an array of usernames
+
 ### _instance_.userExists(username, cb(err: string|null, exists:boolean|undefined))
 
 Checks to see if a user exists. If an error occurs, exists is undefined, otherwise it is a boolean.
