@@ -20,7 +20,7 @@
   "author": "Bryan Hughes <bryan@theoreticalideations.com>",
   "license": "MIT",
   "dependencies": {
-    "mongodb": "1.4.x",
+    "mongodb": "^2.2.19",
     "async": "0.9.x"
   }
 }
