@@ -3,6 +3,8 @@ User Management
 
 A MongoDB-based User Management system with session tokens. Passwords are salted and hashed using PBKDF2.
 
+**Note:** This package is no longer maintained. Feel free to submit a PR and I'll merge it, but I won't be fixing bugs in it.
+
 ## Installing
 
 To install user-management:
