@@ -1,6 +1,6 @@
 {
   "name": "user-management",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "User authentication and management for Node.js using MongoDB",
   "main": "lib/user.js",
   "scripts": {
@@ -20,7 +20,8 @@
   "author": "Bryan Hughes <bryan@theoreticalideations.com>",
   "license": "MIT",
   "dependencies": {
-    "mongodb": "^2.2.19",
-    "async": "0.9.x"
+    "async": "0.9.x",
+    "jasmine-node": "^1.14.5",
+    "mongodb": "^2.2.19"
   }
 }
